@@ -1,5 +1,5 @@
 <template>
-  <v-data-iterator :items="applications" :page="page">
+  <v-data-iterator model-value="applications"   :items="applications" :page="page">
     <template v-slot:header>
       <v-toolbar
         dark

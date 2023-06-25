@@ -31,13 +31,27 @@
               ></v-textarea>
             </v-row>
             <v-row>
-              <v-file-input
-                show-size
-                counter
-                multiple
-                type="file" id="file" ref="file" v-on:change="handleFileUpload()"
-                label="File input"
-              ></v-file-input>
+              <v-col>
+                <v-file-input
+                  show-size
+                  counter
+                  multiple
+                  type="file" id="file" ref="file" v-on:change="handleFileUpload()"
+                  label="File input"
+                ></v-file-input>
+              </v-col>
+              <v-col>
+                <v-select
+                  v-model="select"
+
+                  :items="statuses"
+                  label="Select"
+                  persistent-hint
+                  return-object
+                  single-line
+                ></v-select>
+              </v-col>
+
             </v-row>
             <v-row>
               <v-textarea
@@ -64,7 +78,7 @@
           <v-btn
             color="blue-darken-1"
             variant="text"
-            @click="sendform"
+            @click="submitForm()"
           >
             Save
           </v-btn>
@@ -90,23 +104,29 @@ export default {
     comment: '',
     snackbar: false,
     snackbar_text: '',
+    select: 'Awaiting processing',
+    statuses: ['Accepted', "Requires additional info"],
   }),
   props: {
     item: Array,
   },
   mounted() {
+    this.submitForm()
   },
   methods: {
+    selectLog() {
+      console.log(this.select)
+    },
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
-      console.log(this.file)
-      this.submitForm()
-
-
     },
-    submitForm(){
+
+    submitForm() {
       let formData = new FormData();
       formData.append('file', this.file);
+      formData.append('description', this.description);
+      formData.append('comment', this.comment);
+      formData.append('select', this.select);
 
       axios.post('http://localhost:888/upload-application',
         formData,
@@ -115,10 +135,10 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         }
-      ).then(function(data){
+      ).then(function (data) {
         console.log(data.data);
       })
-        .catch(function(){
+        .catch(function () {
           console.log('FAILURE!!');
         });
     },
