@@ -31,7 +31,8 @@ class SignUpService
         if ($this->userRepository->existsByEmail($signUpRequest->getEmail())) {
             throw new UserAlreadyExistsException();
         }
-
+        echo json_encode($signUpRequest);
+        die;
         $user = (new User())
             ->setUsername($signUpRequest->getUserName())
             ->setEmail($signUpRequest->getEmail());
