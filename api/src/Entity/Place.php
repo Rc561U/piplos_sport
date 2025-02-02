@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\PlaceRepository;
@@ -26,18 +25,12 @@ class Place
         return $this->id;
     }
 
-    public function setId(?int $id): Place
-    {
-        $this->id = $id;
-        return $this;
-    }
-
     public function getSportsman(): ?Sportsman
     {
         return $this->sportsman;
     }
 
-    public function setSportsman(?Sportsman $sportsman): Place
+    public function setSportsman(?Sportsman $sportsman): self
     {
         $this->sportsman = $sportsman;
         return $this;
@@ -48,7 +41,7 @@ class Place
         return $this->tournamentTable;
     }
 
-    public function setTournamentTable(?TournamentTable $tournamentTable): Place
+    public function setTournamentTable(?TournamentTable $tournamentTable): self
     {
         $this->tournamentTable = $tournamentTable;
         return $this;

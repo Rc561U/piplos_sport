@@ -2,14 +2,10 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Place;
 use App\Entity\TournamentTable;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class TournamentTableCrudController extends AbstractCrudController
@@ -25,13 +21,11 @@ class TournamentTableCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             AssociationField::new('competition')->setRequired(false),
             CollectionField::new('places')
+                ->useEntryCrudForm(PlaceCrudController::class)
                 ->setEntryIsComplex()
-                ->useEntryCrudForm(PlaceCrudController::class) // Ensure this points to the correct controller
-                ->setRequired(true) // Set required if you want at least one place
                 ->setFormTypeOptions([
-                    'by_reference' => false, // Important for managing collections
+                    'by_reference' => false, // Важно для корректной работы коллекций
                 ]),
         ];
     }
 }
-

@@ -3,8 +3,8 @@ namespace App\Entity;
 
 use App\Repository\TournamentTableRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TournamentTableRepository::class)]
 class TournamentTable
@@ -25,32 +25,6 @@ class TournamentTable
         $this->places = new ArrayCollection();
     }
 
-    public function addPlace(Place $place): self
-    {
-        if (!$this->places->contains($place)) {
-            $this->places[] = $place;
-            $place->setTournamentTable($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlace(Place $place): self
-    {
-        if ($this->places->removeElement($place)) {
-            if ($place->getTournamentTable() === $this) {
-                $place->setTournamentTable(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function __toString(): string
-    {
-        return (string) $this->id; // Convert ID to string
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +43,30 @@ class TournamentTable
 
     public function getPlaces(): Collection
     {
-        return $this->places; // Getter for places collection
+        return $this->places;
+    }
+
+    public function addPlace(Place $place): self
+    {
+        if (!$this->places->contains($place)) {
+            $this->places[] = $place;
+            $place->setTournamentTable($this);
+        }
+        return $this;
+    }
+
+    public function removePlace(Place $place): self
+    {
+        if ($this->places->removeElement($place)) {
+            if ($place->getTournamentTable() === $this) {
+                $place->setTournamentTable(null);
+            }
+        }
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->id;
     }
 }
