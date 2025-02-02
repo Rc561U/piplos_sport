@@ -1,26 +1,19 @@
 FROM php:8.4-fpm-alpine
 
 # Install packages
-RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash
+RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash icu-dev
 
-#Install symfony-cli
+# Install Symfony CLI
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | bash \
     && apk add symfony-cli
 
-# Xdebug
+# Install Xdebug
 RUN apk add --update linux-headers
 RUN pecl install xdebug && docker-php-ext-enable xdebug
-#ARG INSTALL_XDEBUG=false
-#RUN if [ ${INSTALL_XDEBUG} = true ]; \
-#    then \
-#      pecl install xdebug && docker-php-ext-enable xdebug; \
-#    fi;
-
 COPY ./docker/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-# Postgres
-#RUN apk add --no-cache libpq-dev && docker-php-ext-install pdo_pgsql
-RUN docker-php-ext-install pdo_mysql
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql intl
 
 # Configure non-root user.
 ARG PUID=1000
@@ -38,7 +31,7 @@ USER www-data
 
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN #composer install --no-interaction
+# RUN composer install --no-interaction
 
 CMD php-fpm
 
