@@ -14,14 +14,12 @@ class Competition
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'name', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'competition', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: true)]
     private ?TournamentTable $tournamentTable = null;
 
     #[ORM\Column(length: 255)]
     private ?string $disciplineName = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $discription = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -32,9 +30,21 @@ class Competition
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $eventDate = null;
 
+
+    public function __toString(): string
+    {
+        return $this->getDisciplineName();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(?int $id): Competition
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getTournamentTable(): ?TournamentTable
@@ -42,10 +52,9 @@ class Competition
         return $this->tournamentTable;
     }
 
-    public function setTournamentTable(?TournamentTable $tournamentTable): static
+    public function setTournamentTable(?TournamentTable $tournamentTable): Competition
     {
         $this->tournamentTable = $tournamentTable;
-
         return $this;
     }
 
@@ -54,22 +63,9 @@ class Competition
         return $this->disciplineName;
     }
 
-    public function setDisciplineName(string $disciplineName): static
+    public function setDisciplineName(?string $disciplineName): Competition
     {
         $this->disciplineName = $disciplineName;
-
-        return $this;
-    }
-
-    public function getDiscription(): ?string
-    {
-        return $this->discription;
-    }
-
-    public function setDiscription(?string $discription): static
-    {
-        $this->discription = $discription;
-
         return $this;
     }
 
@@ -78,10 +74,9 @@ class Competition
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description): Competition
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -90,10 +85,9 @@ class Competition
         return $this->venue;
     }
 
-    public function setVenue(string $venue): static
+    public function setVenue(?string $venue): Competition
     {
         $this->venue = $venue;
-
         return $this;
     }
 

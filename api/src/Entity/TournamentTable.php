@@ -1,9 +1,10 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\TournamentTableRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: TournamentTableRepository::class)]
 class TournamentTable
@@ -13,48 +14,61 @@ class TournamentTable
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
-    private ?Sportsman $sportsman = null;
-
     #[ORM\OneToOne(mappedBy: 'tournamentTable', cascade: ['persist', 'remove'])]
-    private ?Competition $name = null;
+    private ?Competition $competition = null;
+
+    #[ORM\OneToMany(mappedBy: 'tournamentTable', targetEntity: Place::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $places;
+
+    public function __construct()
+    {
+        $this->places = new ArrayCollection();
+    }
+
+    public function addPlace(Place $place): self
+    {
+        if (!$this->places->contains($place)) {
+            $this->places[] = $place;
+            $place->setTournamentTable($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlace(Place $place): self
+    {
+        if ($this->places->removeElement($place)) {
+            if ($place->getTournamentTable() === $this) {
+                $place->setTournamentTable(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->id; // Convert ID to string
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSportsman(): ?Sportsman
+    public function getCompetition(): ?Competition
     {
-        return $this->sportsman;
+        return $this->competition;
     }
 
-    public function setSportsman(?Sportsman $sportsman): static
+    public function setCompetition(?Competition $competition): self
     {
-        $this->sportsman = $sportsman;
-
+        $this->competition = $competition;
         return $this;
     }
 
-    public function getName(): ?Competition
+    public function getPlaces(): Collection
     {
-        return $this->name;
-    }
-
-    public function setName(?Competition $name): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($name === null && $this->name !== null) {
-            $this->name->setTournamentTable(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($name !== null && $name->getTournamentTable() !== $this) {
-            $name->setTournamentTable($this);
-        }
-
-        $this->name = $name;
-
-        return $this;
+        return $this->places; // Getter for places collection
     }
 }

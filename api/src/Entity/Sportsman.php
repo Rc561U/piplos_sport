@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Entity\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: SportsmanRepository::class)]
@@ -45,12 +46,17 @@ class Sportsman
 //    #[ORM\InverseJoinColumn(name: 'competition_id', referencedColumnName: 'id', nullable: false)]
 //    private Collection $competitions;
 
-    #[ORM\OneToMany(targetEntity: SocialNetwork::class, mappedBy: 'sportsman', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'sportsman', targetEntity: SocialNetwork::class, cascade: ['persist', 'remove'])]
     private Collection $socialLinks;
 
     public function __construct()
     {
         $this->socialLinks = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName(); // Change this to a relevant property
     }
 
     public function getId(): ?int

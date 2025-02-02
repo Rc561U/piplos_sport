@@ -31,8 +31,8 @@ class SportsmanCrudController extends AbstractCrudController
                     'Male' => 'male',
                     'Female' => 'female',
                 ])
-                ->renderExpanded() // Optional: renders radio buttons instead of a select dropdown
-                ->renderAsBadges([ // Optional: renders choices as badges
+                ->renderExpanded()
+                ->renderAsBadges([
                     'male' => 'success',
                     'female' => 'warning',
                 ]),
@@ -42,9 +42,9 @@ class SportsmanCrudController extends AbstractCrudController
             ImageField::new('imageName')
                 ->setBasePath('/images/sportsmen')
                 ->onlyOnIndex(),
-//            CollectionField::new('socialLinks')
-//                ->useEntryCrudForm(SocialNetworkCrudController::class)
-
+            CollectionField::new('socialLinks')
+                ->useEntryCrudForm(SocialNetworkCrudController::class)
+                ->setEntryIsComplex()
         ];
     }
 }
