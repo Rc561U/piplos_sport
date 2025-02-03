@@ -19,7 +19,6 @@ class PlaceCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             AssociationField::new('sportsman')->setRequired(true),
-            // Поле tournamentTable убрано, так как оно устанавливается автоматически
         ];
     }
 }

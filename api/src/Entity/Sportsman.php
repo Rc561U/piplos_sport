@@ -28,7 +28,7 @@ class Sportsman
     #[ORM\Column(length: 255)]
     private string $sex;
 
-    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
+    #[Vich\UploadableField(mapping: 'sportsmans', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
@@ -56,7 +56,7 @@ class Sportsman
 
     public function __toString(): string
     {
-        return $this->getFullName(); // Change this to a relevant property
+        return $this->getFullName();
     }
 
     public function getId(): ?int
@@ -164,7 +164,6 @@ class Sportsman
     public function removeSocialLink(SocialNetwork $socialLink): self
     {
         if ($this->socialLinks->removeElement($socialLink)) {
-            // Set the owning side to null (unless already changed)
             if ($socialLink->getSportsman() === $this) {
                 $socialLink->setSportsman(null);
             }

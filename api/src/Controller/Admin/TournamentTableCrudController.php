@@ -24,7 +24,7 @@ class TournamentTableCrudController extends AbstractCrudController
                 ->useEntryCrudForm(PlaceCrudController::class)
                 ->setEntryIsComplex()
                 ->setFormTypeOptions([
-                    'by_reference' => false, // Важно для корректной работы коллекций
+                    'by_reference' => false,
                 ]),
         ];
     }
