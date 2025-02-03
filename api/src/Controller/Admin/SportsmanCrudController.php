@@ -38,8 +38,9 @@ class SportsmanCrudController extends AbstractCrudController
             TextField::new('imageFile')
                 ->setFormType(VichImageType::class)
                 ->onlyOnForms(),
+
             ImageField::new('imageName')
-                ->setBasePath('/images/sportsmen')
+                ->setBasePath('/images/athletes')
                 ->onlyOnIndex(),
             CollectionField::new('socialLinks')
                 ->useEntryCrudForm(SocialNetworkCrudController::class)

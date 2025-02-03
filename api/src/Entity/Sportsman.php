@@ -28,7 +28,7 @@ class Sportsman
     #[ORM\Column(length: 255)]
     private string $sex;
 
-    #[Vich\UploadableField(mapping: 'sportsmans', fileNameProperty: 'imageName', size: 'imageSize')]
+    #[Vich\UploadableField(mapping: 'athletes', fileNameProperty: 'imageName', size: 'imageSize')]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
@@ -108,10 +108,11 @@ class Sportsman
     {
         $this->imageFile = $imageFile;
 
-        if (null !== $imageFile) {
+        if ($imageFile) {
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
+
 
     public function getImageName(): ?string
     {
